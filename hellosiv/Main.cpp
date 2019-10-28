@@ -1,73 +1,83 @@
-﻿
-# include <Siv3D.hpp> // OpenSiv3D v0.4.1
+﻿# include <Siv3D.hpp>
 
 void Main()
 {
-	// 背景を水色にする
-	Scene::SetBackground(ColorF(0.8, 0.9, 1.0));
+    Graphics::SetTargetFrameRateHz(60);
 
-	// 大きさ 60 のフォントを用意
-	const Font font(60);
 
-	// 猫のテクスチャを用意
-	const Texture cat(Emoji(U"🐈"));
+    // 2D カメラ
+    Camera2D camera(Vec2(0, -8), 10.0, Camera2DParameters::MouseOnly());
 
-	// 猫の座標
-	Vec2 catPos(640, 450);
+    // 物理演算の精度
+    constexpr int32 velocityIterations = 12;
+    constexpr int32 positionIterations = 4;
 
-	while (System::Update())
-	{
-		// テキストを画面の中心に描く
-		font(U"Hello, Siv3D!🐣").drawAt(Scene::Center(), Palette::Black);
+    // 物理演算用のワールド
+    P2World world(0);
 
-		// 大きさをアニメーションさせて猫を表示する
-		cat.resized(100 + Periodic::Sine0_1(1s) * 20).drawAt(catPos);
+    const MultiPolygon carPolygon = Emoji::CreateImage(U"⬆").alphaToPolygonsCentered().simplified(0.8).scale(0.04);
+    P2Body carBody = world.createPolygons({0, 0}, carPolygon, P2Material(0.1, 0.0, 1.0));
+    Texture carTex = Texture(Emoji(U"⬆"));
 
-		// マウスカーソルに追従する半透明の赤い円を描く
-		Circle(Cursor::Pos(), 40).draw(ColorF(1, 0, 0, 0.5));
+    Polygon polygon;
 
-		// [A] キーが押されたら
-		if (KeyA.down())
-		{
-			// Hello とデバッグ表示する
-			Print << U"Hello!";
-		}
 
-		// ボタンが押されたら
-		if (SimpleGUI::Button(U"Move the cat", Vec2(600, 20)))
-		{
-			// 猫の座標を画面内のランダムな位置に移動する
-			catPos = RandomVec2(Scene::Rect());
-		}
-	}
+    P2Body p;
+    P2Body p2 = world.createStaticRect({10, 20}, SizeF{ 20, 10 }, P2Material(1, 0.1, 1.0));
+    
+
+    while (System::Update())
+    {
+        ClearPrint();
+        // 2D カメラを更新
+        camera.update();
+
+
+        {
+            // 2D カメラの設定から Transformer2D を作成・適用
+            const auto t = camera.createTransformer();
+
+
+            const Circle shape(Arg::center(Cursor::Pos()), 3);
+            shape.drawFrame(2, Palette::Skyblue);
+
+            if (MouseL.pressed())
+            {
+                // マップの Polygon に円を追加
+                polygon.append(shape.asPolygon());
+            }
+
+            if (KeySpace.down()) {
+                polygon = polygon.simplified(2.0);
+                p = world.createStaticClosedLineString({ 0, 0 }, LineString(polygon.vertices().map([](Float2 f) { return Vec2{ f.x, f.y }; })));
+                // p = world.createStaticPolygon({ 0, 0 }, polygon, P2Material(0.1, 0.0, 1.0));
+            }
+
+            {
+                const auto t = Transformer2D(Mat3x2::Rotate(carBody.getAngle()).translated(carBody.getPos()));
+                if (KeyUp.pressed())
+                    carBody.applyForce(Vec2{ 0, -10 }.rotate(carBody.getAngle()));
+                if (KeyDown.pressed())
+                    carBody.applyForce(Vec2{ 0, 10 }.rotate(carBody.getAngle()));
+                if (KeyLeft.pressed())
+                    carBody.applyTorque(-2);
+                if (KeyRight.pressed())
+                    carBody.applyTorque(2);
+            }
+
+            // 物理演算のワールドを更新
+            world.update(Scene::DeltaTime(), velocityIterations, positionIterations);
+
+            // carTex.scaled(0.04).rotated(carBody.getAngle()).drawAt(carBody.getPos());
+
+            polygon.draw(Palette::Gray);
+            p2.draw();
+
+            p.draw();
+            carBody.draw();
+        }
+
+        // 2D カメラ操作の UI を表示
+        camera.draw(Palette::Orange);
+    }
 }
-
-//
-// = アドバイス =
-// Debug ビルドではプログラムの最適化がオフになります。
-// 実行速度が遅いと感じた場合は Release ビルドを試しましょう。
-// アプリをリリースするときにも、Release ビルドにするのを忘れないように！
-//
-// 思ったように動作しない場合は「デバッグの開始」でプログラムを実行すると、
-// 出力ウィンドウに詳細なログが表示されるので、エラーの原因を見つけやすくなります。
-//
-// = お役立ちリンク =
-//
-// OpenSiv3D リファレンス
-// https://siv3d.github.io/ja-jp/
-//
-// チュートリアル
-// https://siv3d.github.io/ja-jp/tutorial/basic/
-//
-// よくある間違い
-// https://siv3d.github.io/ja-jp/articles/mistakes/
-//
-// サポートについて
-// https://siv3d.github.io/ja-jp/support/support/
-//
-// Siv3D Slack (ユーザコミュニティ) への参加
-// https://siv3d.github.io/ja-jp/community/community/
-//
-// 新機能の提案やバグの報告
-// https://github.com/Siv3D/OpenSiv3D/issues
-//
