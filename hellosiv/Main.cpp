@@ -31,8 +31,6 @@ void Main()
         ClearPrint();
         // 2D カメラを更新
         camera.update();
-
-
         {
             // 2D カメラの設定から Transformer2D を作成・適用
             const auto t = camera.createTransformer();
