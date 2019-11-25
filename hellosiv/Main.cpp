@@ -74,6 +74,12 @@ void Main()
 
             p.draw();
             carBody.body().draw();
+
+            for (int i = -1; i <= 1; ++i) {
+                for (int j = -1; j <= 1; ++j) {
+                    Print << carBody.getSensor(field, { i, j }) << U" ";
+                }
+            }
         }
 
         // 2D カメラ操作の UI を表示

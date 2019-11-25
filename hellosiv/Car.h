@@ -1,17 +1,18 @@
 #pragma once
 #include <Siv3D.hpp>
+#include "Field.h"
 
 
 class Car {
 	double accsel_;
 	double steer_;
 	P2Body body_;
-    static constexpr double CAccselForce = 10;
+    static constexpr double CAccselForce = 5;
 public:
 
     void initialize() {
         body_.setDamping(0.9);
-        body_.setAngularDamping(0.8);
+        body_.setAngularDamping(0.99);
     }
 
 	void setAccsel(double _accsel) {
@@ -25,12 +26,21 @@ public:
 	}
 
     void apply() {
-        const auto t = Transformer2D(Mat3x2::Rotate(body_.getAngle()).translated(body_.getPos()));
+        // const auto t = Transformer2D(Mat3x2::Rotate(body_.getAngle()).translated(body_.getPos()));
 
-        body_.applyForce(Vec2{ 0, CAccselForce*accsel_ }.rotate(body_.getAngle()));
-        body_.applyTorque(2.0*steer_);
+        body_.applyForce(
+            Vec2{ 0, CAccselForce*accsel_ }.rotate(body_.getAngle()),
+            Vec2{ 0, -0.5 }.rotate(body_.getAngle())
+        );
+        body_.applyForce(
+            Vec2{ 0, CAccselForce * accsel_ }.rotate(body_.getAngle()+0.4*steer_),
+            Vec2{ 0, 0.5 }.rotate(body_.getAngle())
+        );
+        // body_.applyTorque(2.0*steer_);
     }
-	int getSensor(void* field, Vec2 point) const;
+    int getSensor(const Field& field, Vec2 point) const {
+        return field.polygon().contains(body_.getPos() + point.rotated(body_.getAngle()));
+    }
 
     Car(P2Body&& _body) : body_(_body) { initialize(); }
 };
