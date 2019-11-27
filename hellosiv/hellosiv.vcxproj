@@ -231,7 +231,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Car.h" />
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="Field.h" />
+    <ClInclude Include="HandAiController.h" />
+    <ClInclude Include="KeyController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
