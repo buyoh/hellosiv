@@ -13,6 +13,7 @@ class Car {
     static constexpr double CAccselEngine = 0.1;
     static constexpr double CSteerFront = 0.4;
     static constexpr double CSteerRear = -0.1;
+	// unique_ptr<Controller> controller_;
 public:
 
     void initialize() {

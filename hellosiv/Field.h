@@ -21,6 +21,14 @@ class Field {
 public:
     inline const Polygon& polygon() const noexcept { return polygon_; }
 
+	inline Vec2 getStartPos() const {
+		return path_.front();
+	}
+	inline double getStartAngle() const {
+		return -Math::HalfPi; // path_[0].getAngle(path_[1]);
+	}
+
+
     void generatePolygonFromPath() {
         auto lastv = path_.back();
         bool ignoreFirst = !cyclic_;

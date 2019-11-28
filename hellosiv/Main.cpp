@@ -27,8 +27,9 @@ void Main()
 
     Field field{ {0.0,0.0}, {100.0, 0.0}, {100.0, 100.0}, {-100.0, 100.0}, {-100.0, 0.0} };
     field.generatePolygonFromPath();
-    car.setPos({ 0, 0 });
-    car.setAngle(-Math::HalfPi);
+
+    car.setPos(field.getStartPos());
+    car.setAngle(field.getStartAngle());
 
     std::unique_ptr<Controller> ctrl{ new HandAiController() };
 

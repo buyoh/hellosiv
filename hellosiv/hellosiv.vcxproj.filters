@@ -88,6 +88,9 @@
     <Filter Include="Resource Files\example\config">
       <UniqueIdentifier>{89c12675-1e86-4726-8c52-108fd67b62e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Interface">
+      <UniqueIdentifier>{b3393106-d242-4c81-9e4a-9418508bcf5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -361,10 +364,22 @@
     <ClInclude Include="KeyController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Controller.h">
+    <ClInclude Include="HandAiController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HandAiController.h">
+    <ClInclude Include="FieldPresenter.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="CarPresenter.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="CarManipulator.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
