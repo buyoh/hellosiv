@@ -9,13 +9,8 @@ void Main()
 {
     Graphics::SetTargetFrameRateHz(60);
 
-
     // 2D カメラ
     Camera2D camera(Vec2(0, -8), 10.0, Camera2DParameters::MouseOnly());
-
-    // 物理演算の精度
-    constexpr int32 velocityIterations = 12;
-    constexpr int32 positionIterations = 4;
 
     // 物理演算用のワールド
     P2World world(0);
@@ -30,7 +25,16 @@ void Main()
     car.setPos(field.getStartPos());
     car.setAngle(field.getStartAngle());
 
-    std::unique_ptr<IController> ctrl{ new HandAiController() };
+    car.setController(std::make_unique<HandAiController>());
+
+
+    Array<const IDrawable*> drawables;
+    drawables.push_back(&field);
+    drawables.push_back(&car);
+    try {
+        drawables.push_back(dynamic_cast<const IDrawable*>(&car.getController()));
+    }
+    catch (std::bad_cast) {}
 
     while (System::Update())
     {
@@ -41,15 +45,14 @@ void Main()
             // 2D カメラの設定から Transformer2D を作成・適用
             const auto t = camera.createTransformer();
 
-            car.manipulate(ctrl->apply(car, field)); // TODO: carの中で。
-            car.apply();
+            car.apply(field);
 
             // 物理演算のワールドを更新
-            world.update(Scene::DeltaTime(), velocityIterations, positionIterations);
+            world.update(Scene::DeltaTime(), 12, 4);
 
+            for (const IDrawable* d : drawables)
+                d->draw();
 
-            field.draw();
-            car.draw();
         }
 
         // 2D カメラ操作の UI を表示

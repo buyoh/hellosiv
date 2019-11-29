@@ -8,7 +8,7 @@ class Car : public ICarBase, public ICarManipulator, public ICarPresenter, publi
     ControllerMessage ctrl_;
 	P2Body body_;
     Texture texture_;
-    // unique_ptr<Controller> controller_;
+    std::unique_ptr<IController> controller_;
 
     static constexpr double CEngineForceFront = 1.0;
     static constexpr double CEngineForceRear = 1.0;
@@ -34,8 +34,14 @@ public:
         body_.setPos(pos);
     }
 
-    void manipulate(ControllerMessage cm) override { // TODO: 要らない
-        ctrl_ = cm;
+    void setController(std::unique_ptr<IController> controller) override{
+        controller_ = move(controller);
+    }
+    const IController& getController() const override {
+        return *controller_;
+    }
+    bool hasController() const override {
+        return (bool)controller_;
     }
 
 	const P2Body& body() const override {
@@ -45,7 +51,9 @@ public:
         return field.isOnRoad(body_.getPos() + point.rotated(body_.getAngle()));
     }
 
-    void apply() override {
+    void apply(const IFieldPresenter& field) override {
+        if (hasController()) ctrl_ = controller_->apply(*this, field);
+
         engine_ += CAccselEngine * ctrl_.accsel();
         engine_ *= CEngineDump;
         //if (body_.getVelocity().lengthSq() != 0)

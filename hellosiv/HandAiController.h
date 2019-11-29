@@ -3,9 +3,10 @@
 #include "IDrawable.h"
 
 class HandAiController : public IController, public IDrawable {
+    Mat3x2 carTransformer_;
 public:
     ControllerMessage apply(const ICarPresenter& car, const IFieldPresenter& field) override {
-        const auto t = Transformer2D(car.transformer());
+        const auto t = Transformer2D(carTransformer_ = car.transformer());
         double ap = 0;
         for (int i = 5; i <= 15; ++i) {
             double a = Math::Pi * i / 20;
@@ -15,6 +16,7 @@ public:
     }
 
     void draw() const override {
+        const auto t = Transformer2D(carTransformer_);
         for (int i = 5; i <= 15; ++i) {
             double a = Math::Pi * i / 20;
             Circle(Math::Cos(a) * 20, Math::Sin(a) * 20, 0.3).draw();
