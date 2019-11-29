@@ -1,7 +1,7 @@
 ﻿# include <Siv3D.hpp>
+#include "Interfaces.h"
 #include "Field.h"
 #include "Car.h"
-#include "Controller.h"
 #include "KeyController.h"
 #include "HandAiController.h"
 
@@ -20,9 +20,8 @@ void Main()
     // 物理演算用のワールド
     P2World world(0);
 
-    const MultiPolygon carPolygon = Emoji::CreateImage(U"⬇").alphaToPolygonsCentered().simplified(0.8).scale(0.04);
-    Car car{ world.createPolygons({0, 0}, carPolygon, P2Material(0.1, 0.0, 1.0)) };
-    Texture carTex = Texture(Emoji(U"⬇"));
+
+    Car car(world);
 
 
     Field field{ {0.0,0.0}, {100.0, 0.0}, {100.0, 100.0}, {-100.0, 100.0}, {-100.0, 0.0} };
@@ -31,7 +30,7 @@ void Main()
     car.setPos(field.getStartPos());
     car.setAngle(field.getStartAngle());
 
-    std::unique_ptr<Controller> ctrl{ new HandAiController() };
+    std::unique_ptr<IController> ctrl{ new HandAiController() };
 
     while (System::Update())
     {
@@ -42,26 +41,15 @@ void Main()
             // 2D カメラの設定から Transformer2D を作成・適用
             const auto t = camera.createTransformer();
 
-            ctrl->apply(car, field);
+            car.manipulate(ctrl->apply(car, field)); // TODO: carの中で。
             car.apply();
 
             // 物理演算のワールドを更新
             world.update(Scene::DeltaTime(), velocityIterations, positionIterations);
 
 
-            field.polygon().draw(Palette::Gray);
-
-            carTex.scaled(0.04).rotated(car.body().getAngle()).drawAt(car.body().getPos());
-            // car.body().draw();
-
-            // {
-            //     const auto t = Transformer2D(car.transformer());
-            //     for (int i = -1; i <= 1; ++i) {
-            //         for (int j = -1; j <= 1; ++j) {
-            //             Circle(i*5, j*5, 0.3).draw(car.getSensor(field, { i*2, j*2 }) ? Palette::White : Palette::Black);
-            //         }
-            //     }
-            // }
+            field.draw();
+            car.draw();
         }
 
         // 2D カメラ操作の UI を表示

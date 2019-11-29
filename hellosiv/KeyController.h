@@ -1,12 +1,11 @@
 #pragma once
+#include "Interfaces.h"
 
-#include "Controller.h"
-
-class KeyController : public Controller {
+class KeyController : public IController {
 public:
-    virtual void apply(Car& car, const Field& field) override {
-        car.setAccsel(KeyUp.pressed() ? 1 : KeyDown.pressed() ? -1 : 0);
-        car.setSteer(KeyLeft.pressed() ? -1 : KeyRight.pressed() ? 1 : 0);
+    void apply(ICarManipulator& manipulator, const ICarPresenter& car, const IFieldPresenter& field) override {
+        manipulator.setAccsel(KeyUp.pressed() ? 1 : KeyDown.pressed() ? -1 : 0);
+        manipulator.setSteer(KeyLeft.pressed() ? -1 : KeyRight.pressed() ? 1 : 0);
     }
-    inline KeyController() : Controller() { }
+    inline KeyController() : IController() { }
 };

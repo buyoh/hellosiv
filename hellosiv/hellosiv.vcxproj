@@ -231,13 +231,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Car.h" />
-    <ClInclude Include="CarManipulator.h" />
-    <ClInclude Include="CarPresenter.h" />
-    <ClInclude Include="Controller.h" />
+    <ClInclude Include="ControllerMessage.h" />
+    <ClInclude Include="ICarBase.h" />
+    <ClInclude Include="ICarManipulator.h" />
+    <ClInclude Include="IDrawable.h" />
+    <ClInclude Include="ICarPresenter.h" />
+    <ClInclude Include="IController.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="FieldFactory.h" />
-    <ClInclude Include="FieldPresenter.h" />
+    <ClInclude Include="IFieldPresenter.h" />
     <ClInclude Include="HandAiController.h" />
+    <ClInclude Include="Interfaces.h" />
     <ClInclude Include="KeyController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

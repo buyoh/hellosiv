@@ -1,7 +1,8 @@
 #pragma once
 #include <Siv3D.hpp>
+#include "Interfaces.h"
 
-class Field {
+class Field : public IFieldPresenter, public IDrawable {
     using Path = Array<Vec2>;
 
     bool cyclic_ = true;
@@ -19,14 +20,21 @@ class Field {
     }
 
 public:
-    inline const Polygon& polygon() const noexcept { return polygon_; }
+    // inline const Polygon& polygon() const noexcept { return polygon_; }
 
-	inline Vec2 getStartPos() const {
+	inline Vec2 getStartPos() const override {
 		return path_.front();
 	}
-	inline double getStartAngle() const {
+	inline double getStartAngle() const override {
 		return -Math::HalfPi; // path_[0].getAngle(path_[1]);
 	}
+    inline bool isOnRoad(const Vec2& vec) const override {
+        return polygon_.contains(vec);
+    }
+
+    void draw() const override {
+        polygon_.draw(Palette::Gray);
+    }
 
 
     void generatePolygonFromPath() {

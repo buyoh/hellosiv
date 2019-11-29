@@ -91,6 +91,9 @@
     <Filter Include="Header Files\Interface">
       <UniqueIdentifier>{b3393106-d242-4c81-9e4a-9418508bcf5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Includer">
+      <UniqueIdentifier>{e2759d55-395c-45e6-93d0-2acc82a33556}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -355,9 +358,6 @@
     </Xml>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Car.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Field.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -367,19 +367,34 @@
     <ClInclude Include="HandAiController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FieldPresenter.h">
-      <Filter>Header Files\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="CarPresenter.h">
-      <Filter>Header Files\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="CarManipulator.h">
-      <Filter>Header Files\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>Header Files\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="FieldFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ICarBase.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ICarManipulator.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IDrawable.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ICarPresenter.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IController.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IFieldPresenter.h">
+      <Filter>Header Files\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces.h">
+      <Filter>Header Files\Includer</Filter>
+    </ClInclude>
+    <ClInclude Include="Car.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerMessage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
