@@ -25,16 +25,16 @@ void Main()
     car.setPos(field.getStartPos());
     car.setAngle(field.getStartAngle());
 
-    car.setController(std::make_unique<HandAiController>());
+    car.setController(std::make_unique<KeyController>());
 
 
     Array<const IDrawable*> drawables;
     drawables.push_back(&field);
     drawables.push_back(&car);
-    try {
-        drawables.push_back(dynamic_cast<const IDrawable*>(&car.getController()));
+    {
+        auto p = dynamic_cast<const IDrawable*>(&car.getController());
+        if (p) drawables.push_back(p);
     }
-    catch (std::bad_cast) {}
 
     while (System::Update())
     {
