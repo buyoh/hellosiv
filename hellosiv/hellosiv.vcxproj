@@ -108,6 +108,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Car.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,8 +170,10 @@
     <None Include="App\example\test.toml" />
     <None Include="App\nlp\japanese\jumanpp\LICENSE" />
     <None Include="App\nlp\japanese\jumanpp\README.md" />
+    <None Include="App\config.ini" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="App\course.txt" />
     <Text Include="App\engine\font\fontawesome\LICENSE.txt" />
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
     <Text Include="App\example\font\AnnyantRoman\readme.txt" />
@@ -227,6 +230,21 @@
     <None Include="App\example\shader\2d\swirl.hlsl">
       <FileType>Document</FileType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Siv3DCar.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="ControllerMessage.h" />
+    <ClInclude Include="ICarBase.h" />
+    <ClInclude Include="ICarManipulator.h" />
+    <ClInclude Include="IDrawable.h" />
+    <ClInclude Include="ICarPresenter.h" />
+    <ClInclude Include="IController.h" />
+    <ClInclude Include="PathField.h" />
+    <ClInclude Include="IFieldPresenter.h" />
+    <ClInclude Include="HandAiController.h" />
+    <ClInclude Include="Interfaces.h" />
+    <ClInclude Include="KeyController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
