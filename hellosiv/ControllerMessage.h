@@ -9,5 +9,6 @@ public:
     constexpr void setSteer(double s) { this->second = validate(s); }
     constexpr double accsel() const { return this->first; }
     constexpr double steer() const { return this->second; }
-    constexpr ControllerMessage(double _accsel = 0, double _steer = 0) : std::pair<double, double>(_accsel, _steer) {}
+    constexpr ControllerMessage(double _accsel = 0, double _steer = 0)
+        :std::pair<double, double>(validate(_accsel), validate(_steer)) {}
 };
