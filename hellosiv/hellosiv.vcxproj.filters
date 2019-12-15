@@ -303,6 +303,9 @@
     <None Include="App\example\config\config.toml">
       <Filter>Resource Files\example\config</Filter>
     </None>
+    <None Include="App\config.ini">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\engine\font\fontawesome\LICENSE.txt">
@@ -328,6 +331,9 @@
     </Text>
     <Text Include="App\example\test.txt">
       <Filter>Resource Files\example</Filter>
+    </Text>
+    <Text Include="App\course.txt">
+      <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -358,16 +364,10 @@
     </Xml>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Field.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="KeyController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HandAiController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FieldFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ICarBase.h">
@@ -391,10 +391,16 @@
     <ClInclude Include="Interfaces.h">
       <Filter>Header Files\Includer</Filter>
     </ClInclude>
-    <ClInclude Include="Car.h">
+    <ClInclude Include="ControllerMessage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ControllerMessage.h">
+    <ClInclude Include="PathField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Siv3DCar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,31 +1,30 @@
 ﻿# include <Siv3D.hpp>
+#include <fstream>
 #include "Interfaces.h"
-#include "Field.h"
-#include "Car.h"
+#include "PathField.h"
+#include "Siv3DCar.h"
 #include "KeyController.h"
 #include "HandAiController.h"
 
-void Main()
-{
+void Main() {
+
     Graphics::SetTargetFrameRateHz(60);
 
-    // 2D カメラ
-    Camera2D camera(Vec2(0, -8), 10.0, Camera2DParameters::MouseOnly());
 
-    // 物理演算用のワールド
     P2World world(0);
+
+    // PathField field{ {0.0,0.0}, {100.0, 0.0}, {100.0, 100.0}, {-100.0, 100.0}, {-100.0, 0.0} };
+    std::ifstream courseFile("./course.txt");
+    PathField field(courseFile);
+    courseFile.close();
 
 
     Car car(world);
-
-
-    Field field{ {0.0,0.0}, {100.0, 0.0}, {100.0, 100.0}, {-100.0, 100.0}, {-100.0, 0.0} };
-    field.generatePolygonFromPath();
-
     car.setPos(field.getStartPos());
     car.setAngle(field.getStartAngle());
+    car.setController(std::make_unique<HandAiController>());
 
-    car.setController(std::make_unique<KeyController>());
+    Camera2D camera(field.getStartPos(), 10.0, Camera2DParameters::MouseOnly());
 
 
     Array<const IDrawable*> drawables;
@@ -36,18 +35,17 @@ void Main()
         if (p) drawables.push_back(p);
     }
 
-    while (System::Update())
-    {
+
+    while (System::Update()) {
+
         ClearPrint();
-        // 2D カメラを更新
         camera.update();
         {
-            // 2D カメラの設定から Transformer2D を作成・適用
             const auto t = camera.createTransformer();
 
+            
             car.apply(field);
 
-            // 物理演算のワールドを更新
             world.update(Scene::DeltaTime(), 12, 4);
 
             for (const IDrawable* d : drawables)
